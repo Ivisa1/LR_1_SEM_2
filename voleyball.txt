@@ -1,0 +1,4 @@
+Lemeshko_Aleksey_Dmitrievich 1 18 1 1 4
+Lemeshko_Aleksey_Dmitrievic 1 17 2 0 2
+Lemeshko_Aleksey_Dmitrievi 0 16 3 0 1
+Lemeshko_Aleksey_Dmitriev 0 15 4 0 3
