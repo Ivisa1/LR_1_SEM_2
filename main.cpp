@@ -5,10 +5,6 @@
 
 using namespace std;
 
-int Summ (int a, int b) {
-    return a + b;
-}
-
 // СТРУКТУРЫ
 struct Marks { //  информация об оценках
     short aig; // алгебра и геометрия
@@ -38,9 +34,6 @@ struct Student { // общая структура информации о сту
     bool sex; // 1 - мужской, 0 - женский
     struct AboutGroup aboutGroup;
     struct Marks marks;
-    int Summ (int a, int b) {
-        return a + b;
-    };
 };
 
 struct Idz {
@@ -234,35 +227,20 @@ struct Idz {
 
     void PrintListOfStudents(struct Student students[], unsigned short temp) {
         for(int i = 0; i < temp; i++) {
-            cout << "\n";
-            cout << students[i].names.first_name;
-            cout << ' ';
-            cout << students[i].names.second_name;
-            cout << ' ';
-            cout << students[i].names.third_name;
-            cout << ' ';
-            cout << students[i].sex;
-            cout << ' ';
-            cout << students[i].aboutGroup.group;
-            cout << ' ';
-            cout << students[i].aboutGroup.number_in_group;
-            cout << ' ';
-            cout << students[i].marks.aig;
-            cout << ' ';
-            cout << students[i].marks.english;
-            cout << ' ';
-            cout << students[i].marks.informatics;
-            cout << ' ';
-            cout << students[i].marks.math_an;
-            cout << ' ';
-            cout << students[i].marks.philosophy;
-            cout << ' ';
-            cout << students[i].marks.physics;
-            cout << ' ';
-            cout << students[i].marks.programming;
-            cout << ' ';
-            cout << students[i].marks.sport;
-            cout << "\n";
+            cout << "\n" << students[i].names.first_name << ' ';
+            cout << students[i].names.second_name << ' ';
+            cout << students[i].names.third_name << ' ';
+            cout << students[i].sex << ' ';
+            cout << students[i].aboutGroup.group << ' ';
+            cout << students[i].aboutGroup.number_in_group << ' ';
+            cout << students[i].marks.aig << ' ';
+            cout << students[i].marks.english << ' ';
+            cout << students[i].marks.informatics << ' ';
+            cout << students[i].marks.math_an << ' ';
+            cout << students[i].marks.philosophy << ' ';
+            cout << students[i].marks.physics << ' ';
+            cout << students[i].marks.programming << ' ';
+            cout << students[i].marks.sport << '\n';
         }
     }
 
@@ -289,34 +267,20 @@ struct Idz {
         cout << "Студенты группы " << number << " :\n";
         for(int i = 0; i < 10; i++) {
             if(number == students[i].aboutGroup.group) {
-                cout << students[i].names.first_name;
-                cout << ' ';
-                cout << students[i].names.second_name;
-                cout << ' ';
-                cout << students[i].names.third_name;
-                cout << ' ';
-                cout << students[i].sex;
-                cout << ' ';
-                cout << students[i].aboutGroup.group;
-                cout << ' ';
-                cout << students[i].aboutGroup.number_in_group;
-                cout << ' ';
-                cout << students[i].marks.aig;
-                cout << ' ';
-                cout << students[i].marks.english;
-                cout << ' ';
-                cout << students[i].marks.informatics;
-                cout << ' ';
-                cout << students[i].marks.math_an;
-                cout << ' ';
-                cout << students[i].marks.philosophy;
-                cout << ' ';
-                cout << students[i].marks.physics;
-                cout << ' ';
-                cout << students[i].marks.programming;
-                cout << ' ';
-                cout << students[i].marks.sport;
-                cout << "\n";
+                cout << students[i].names.first_name << ' ';
+                cout << students[i].names.second_name << ' ';
+                cout << students[i].names.third_name << ' ';
+                cout << students[i].sex << ' ';
+                cout << students[i].aboutGroup.group << ' ';
+                cout << students[i].aboutGroup.number_in_group << ' ';
+                cout << students[i].marks.aig << ' ';
+                cout << students[i].marks.english << ' ';
+                cout << students[i].marks.informatics << ' ';
+                cout << students[i].marks.math_an << ' ';
+                cout << students[i].marks.philosophy << ' ';
+                cout << students[i].marks.physics << ' ';
+                cout << students[i].marks.programming << ' ';
+                cout << students[i].marks.sport << '\n';
             }
         }
     }
@@ -328,34 +292,20 @@ struct Idz {
         cout << "\nСтуденты с номером в группе " << number << " :\n";
         for(int i = 0; i < 10; i++) {
             if(number == students[i].aboutGroup.number_in_group) {
-                cout << students[i].names.first_name;
-                cout << ' ';
-                cout << students[i].names.second_name;
-                cout << ' ';
-                cout << students[i].names.third_name;
-                cout << ' ';
-                cout << students[i].sex;
-                cout << ' ';
-                cout << students[i].aboutGroup.group;
-                cout << ' ';
-                cout << students[i].aboutGroup.number_in_group;
-                cout << ' ';
-                cout << students[i].marks.aig;
-                cout << ' ';
-                cout << students[i].marks.english;
-                cout << ' ';
-                cout << students[i].marks.informatics;
-                cout << ' ';
-                cout << students[i].marks.math_an;
-                cout << ' ';
-                cout << students[i].marks.philosophy;
-                cout << ' ';
-                cout << students[i].marks.physics;
-                cout << ' ';
-                cout << students[i].marks.programming;
-                cout << ' ';
-                cout << students[i].marks.sport;
-                cout << "\n";
+                cout << students[i].names.first_name << ' ';
+                cout << students[i].names.second_name << ' ';
+                cout << students[i].names.third_name << ' ';
+                cout << students[i].sex << ' ';
+                cout << students[i].aboutGroup.group << ' ';
+                cout << students[i].aboutGroup.number_in_group << ' ';
+                cout << students[i].marks.aig << ' ';
+                cout << students[i].marks.english << ' ';
+                cout << students[i].marks.informatics << ' ';
+                cout << students[i].marks.math_an << ' ';
+                cout << students[i].marks.philosophy << ' ';
+                cout << students[i].marks.physics << ' ';
+                cout << students[i].marks.programming << ' ';
+                cout << students[i].marks.sport << '\n';
             }
         }
     }
