@@ -448,11 +448,11 @@ struct Idz {
                     "Номер: ";
             cin >> number_of_task;
 
-            if (number_of_task == 0) { // возвращение в предыдущее меню
-                cout << "\nВозвращение в предыдущее меню...\n";
-                break;
-            }
             switch (number_of_task) {
+                case 0: {
+                    cout << "\nВозвращение в предыдущее меню...\n";
+                    return 0;
+                }
                 case 1: { // Создание новой записи о студенте (Задание 1)
                     AddNewStudent(students, temp, "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/students.txt");
                     break;
@@ -503,6 +503,82 @@ struct Idz {
         return 0;
     }
 
+    //ВТОРАЯ ПРАКТИЧЕСКАЯ
+
+    void DefiniteList() {
+
+    }
+
+    void IndefiniteList() {
+
+    }
+
+    int Pract_Rab_2(unsigned short number_of_task) {
+        cout << "\nКаким способом вы хотите создать двусвязный список?\n"
+                "1. Задать размерность, рандомные значения\n"
+                "2. Задать значения, размерность по их количеству\n"
+                "Для возвращения в предыдущее меню введите 0\n\n"
+                "Номер: ";
+        cin >> number_of_task;
+
+        switch(number_of_task) {
+            case 0: {
+                cout << "\nВозвращение в предыдущее меню...\n";
+                return 0;
+            }
+            case 1: {
+                DefiniteList();
+                break;
+            }
+            case 2: {
+                IndefiniteList();
+                break;
+            }
+        }
+        while (true) {
+            cout << "\nВыберите номер задания, к которому хотите получить доступ\n"
+                    "Для возвращения в предыдущее меню введите 0\n\n"
+                    "Номер: ";
+            cin >> number_of_task;
+
+            switch (number_of_task) {
+                case 0: {
+                    cout << "\nВозвращение в предыдущее меню...\n";
+                    return 0;
+                }
+                case 1: { // Создание списка с заданной размерностью и рандомными значениями (Задание 1,а)
+                    break;
+                }
+                case 2: { // Создание списка с размерностью по количеству введённых элементов (Задание 1,б)
+                    break;
+                }
+                case 3: { // Скорость создания списка из задания 1,б (Задание 2)
+                    break;
+                }
+                case 4: { // Вставка элемента (Задание 3.1)
+                    break;
+                }
+                case 5: { // Удаление элемента (Задание 3.2)
+                    break;
+                }
+                case 6: { // Обмен элементов (Задание 3.3)
+                    break;
+                }
+                case 7: { // Получение элемента (Задание 3.4)
+                    break;
+                }
+                case 8: { // Скорость вставки, удаления и получения элемента (Задание 4)
+                    break;
+                }
+                default: {
+                    cout << "\nЗадания с таким номером не существует\n";
+                    break;
+                }
+            }
+        }
+        return 0;
+    }
+
 int main() {
         cout << sizeof(Student);
     unsigned short number_of_pract_or_task = 0;
@@ -526,7 +602,8 @@ int main() {
                 break;
             }
             case 2: { // 2 практическая
-                cout << "\nВторая практическая на данный момент в разработке\n";
+                cout << "\nВключение второй практической...\n";
+                Pract_Rab_2(number_of_pract_or_task);
                 break;
             }
             case 3: { // 3 практическая
