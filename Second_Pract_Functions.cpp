@@ -54,6 +54,18 @@ void DeleteList(unsigned short &length, listItem *list) {
     length = 0;
 }
 
+void OutputList(listItem *list, unsigned short &length) {
+    struct listItem *curr = list;
+    while (true) {
+        cout << curr->data << ' ';
+        if(curr->next) {
+            curr = curr->next;
+        }
+        else {break;}
+    }
+    cout << endl;
+}
+
 int Pract_Rab_2(unsigned short number_of_task) {
     unsigned short length = 0;
     listItem *list;
@@ -71,6 +83,7 @@ int Pract_Rab_2(unsigned short number_of_task) {
         }
         case 1: {
             list = Create_DefiniteList(length);
+            OutputList(list, length);
             break;
         }
         case 2: {
