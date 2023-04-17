@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <random>
 
 using namespace std;
 
@@ -45,6 +47,11 @@ struct Idz {
     unsigned short clothes_size; // Размер одежды (0 - XXS, 6 - XXL)
 };
 
+struct listItem{
+    listItem *prev;
+    listItem *next;
+    int data;
+};
 // ФУНКЦИИ
     // ПЕРВАЯ ПРАКТИЧЕСКАЯ
 
@@ -505,15 +512,55 @@ struct Idz {
 
     //ВТОРАЯ ПРАКТИЧЕСКАЯ
 
-    void DefiniteList() {
+    listItem *Create_DefiniteList(unsigned short &length) {
+        listItem *curr = 0, *next = 0;
+        while(true) {
+            cout << "Введите длину списка: ";
+            if(cin >> length) {
+                if (length <= 0) {
+                    cout << "\nВведено неверное значение, введите число ещё раз\n\n";
+                    continue;
+                } else {break;}
+            }
+            else {
+                cout << "\nВведено неверное значение, попробуйте ещё раз\n\n";
+                continue;
+            }
+        }
+        for (unsigned i = 1; i <= length; ++i)
+        {
+            curr = new listItem;
+            curr->data = random()%100;
+            curr->next = next;
+            if (next) {
+                next->prev = curr;
+            }
+            next = curr;
+        }
+        curr->prev = 0;
+        return curr;
+    }
+
+    listItem *Create_IndefiniteList(unsigned short &length) {
 
     }
 
-    void IndefiniteList() {
-
+    void DeleteList(unsigned short &length, listItem *list) {
+        listItem *next = 0;
+        for(int i = 1; i <= length; i++) {
+            if(list->next) {
+                next = list->next;
+            }
+            delete list;
+            list = next;
+        }
+        delete next;
+        length = 0;
     }
 
     int Pract_Rab_2(unsigned short number_of_task) {
+        unsigned short length = 0;
+        listItem *list;
         cout << "\nКаким способом вы хотите создать двусвязный список?\n"
                 "1. Задать размерность, рандомные значения\n"
                 "2. Задать значения, размерность по их количеству\n"
@@ -527,11 +574,11 @@ struct Idz {
                 return 0;
             }
             case 1: {
-                DefiniteList();
+                list = Create_DefiniteList(length);
                 break;
             }
             case 2: {
-                IndefiniteList();
+                list = Create_IndefiniteList(length);
                 break;
             }
         }
@@ -547,6 +594,8 @@ struct Idz {
                     return 0;
                 }
                 case 1: { // Создание списка с заданной размерностью и рандомными значениями (Задание 1,а)
+                    DeleteList(length, list);
+                    list = Create_DefiniteList(length);
                     break;
                 }
                 case 2: { // Создание списка с размерностью по количеству введённых элементов (Задание 1,б)
@@ -576,11 +625,9 @@ struct Idz {
                 }
             }
         }
-        return 0;
     }
 
 int main() {
-        cout << sizeof(Student);
     unsigned short number_of_pract_or_task = 0;
     while(true) {
         cout << "\nВведите номер практической, к которой хотите получить доступ\n"
