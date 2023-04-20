@@ -44,7 +44,37 @@ listItem *Create_DefiniteList(int &length) {
 }
 
 listItem *Create_IndefiniteList(int &length) {
-
+    listItem *curr = 0, *next = 0;
+    for(int i = 1; ; i++) {
+        curr = new listItem;
+        cout << "Введите значение " << i << " элемента (с конца): ";
+        if(cin >> curr->data) {
+            cin.clear();
+            cin.ignore();
+            length++;
+        }
+        else {
+            if(i == 1) {
+                cout << "Введено неверное значение, попробуйте ещё раз\n\n";
+                cin.clear();
+                cin.ignore();
+                continue;
+            }
+            else {
+                cout << "Введено неверное значение, создание списка прекращено\n\n";
+                cin.clear();
+                cin.ignore();
+                delete curr;
+                next->prev = 0;
+                return next;
+            }
+        }
+        curr->next = next;
+        if (next) {
+            next->prev = curr;
+        }
+        next = curr;
+    }
 }
 
 listItem *AddElement(listItem *&list, int &length) {
@@ -259,14 +289,66 @@ int DeleteElementByPosition(listItem *&list, int &length) {
     }
 }
 
-void DeleteList(int &length, listItem *&list) {
-    listItem *curr = list, *next = 0;
-    for(int i = 1; i <= length; i++) {
-        next = curr->next;
-        delete curr;
-        curr = next;
+int GetElementByValue(listItem *&list, int &length) {
+    int element = 0;
+    while(true) {
+        cout << "Введите значение элемента: ";
+        if(cin >> element) {
+            cin.clear();
+            cin.ignore();
+            break;
+        }
+        else {
+            cout << "Введено неверное значение, попробуйте ещё раз\n\n";
+            cin.clear();
+            cin.ignore();
+            continue;
+        }
     }
-    length = 0;
+    listItem *curr = list;
+    for(int i = 1; i <= length; i++) {
+        if(curr->data == element) {
+            cout << "Элемент со значением " << element << " найден на " << i << " позиции\n\n";
+            return 0;
+        }
+        else {
+            curr = curr->next;
+        }
+    }
+    cout << "Элемент со значением " << element << " не найден\n\n";
+    return 0;
+}
+
+int GetElementByPosition(listItem *&list, int &length) {
+    int position = 0;
+    while(true) {
+        cout << "Введите позицию элемента: ";
+        if(cin >> position) {
+            if(position < 1 || position > length) {
+                cout << "Элемента с такой позицией не существует\n\n";
+                cin.clear();
+                cin.ignore();
+                return 0;
+            }
+            cin.clear();
+            cin.ignore();
+            break;
+        }
+        else {
+            cout << "Введено неверное значение, попробуйте ещё раз\n\n";
+            cin.clear();
+            cin.ignore();
+            continue;
+        }
+    }
+    listItem *curr = list;
+    for(int i = 1;; i++) {
+        if(position == i) {
+            cout << "Элемент на позиции " << position << " имеет значение " << curr->data << "\n\n";
+            return 0;
+        }
+        curr = curr->next;
+    }
 }
 
 void OutputList(listItem *&list) {
@@ -281,40 +363,78 @@ void OutputList(listItem *&list) {
     cout << endl;
 }
 
+// ИДЗ
+void DeleteMassive() {}
+
+void DeleteList(int &length, listItem *&list) {
+    listItem *curr = list, *next = 0;
+    for(int i = 1; i <= length; i++) {
+        next = curr->next;
+        delete curr;
+        curr = next;
+    }
+    length = 0;
+}
+
+
 int Pract_Rab_2(unsigned short number_of_task) {
     int length = 0;
     listItem *list;
-    cout << "\nКаким способом вы хотите создать двусвязный список?\n"
-            "1. Задать размерность, рандомные значения\n"
-            "2. Задать значения, размерность по их количеству\n"
-            "Для возвращения в предыдущее меню введите 0\n\n"
-            "Номер: ";
-    cin >> number_of_task;
 
-    switch(number_of_task) {
-        case 0: {
-            cout << "\nВозвращение в предыдущее меню...\n";
-            return 0;
+    while (true) {
+        cout << "\nКаким способом вы хотите создать двусвязный список?\n"
+                "1. Задать размерность, рандомные значения\n"
+                "2. Задать значения, размерность по их количеству\n"
+                "Для возвращения в предыдущее меню введите 0\n\n"
+                "Номер: ";
+        cin >> number_of_task;
+        switch (number_of_task) {
+            case 0: {
+                cout << "\nВозвращение в предыдущее меню...\n";
+                return 0;
+            }
+            case 1: {
+                DeleteList(length, list);
+                list = Create_DefiniteList(length);
+                OutputList(list);
+                break;
+            }
+            case 2: {
+                DeleteList(length, list);
+                unsigned int start_time =  clock(); // начальное время
+                list = Create_IndefiniteList(length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время выполнения: " << search_time << " милисекунд\n\n";
+                OutputList(list);
+                break;
+            }
+            default: {
+                cout << "Введено неверное значение, попробуйте ещё раз\n";
+                cin.clear();
+                cin.ignore();
+                continue;
+            }
         }
-        case 1: {
-            list = Create_DefiniteList(length);
-            OutputList(list);
-            break;
-        }
-        case 2: {
-            list = Create_IndefiniteList(length);
-            OutputList(list);
-            break;
-        }
+        break;
     }
     while (true) {
-        cout << "\nВыберите номер задания, к которому хотите получить доступ\n"
+        cout << "\nВыберите номер задания, к которому хотите получить доступ:\n"
+                "1. Создание списка с рандомными значениями\n"
+                "2. Создание списка с фиксированными значениями\n"
+                "3. Добавление элемента в список\n"
+                "4. Удаление элемента по значению\n"
+                "5. Удаление элемента по позиции\n"
+                "6. Обмен элементов\n"
+                "7. Получение элемента по значению\n"
+                "8. Получение элемента по индексу\n"
                 "Для возвращения в предыдущее меню введите 0\n\n"
                 "Номер: ";
         cin >> number_of_task;
 
         switch (number_of_task) {
             case 0: {
+                DeleteList(length, list);
                 cout << "\nВозвращение в предыдущее меню...\n";
                 return 0;
             }
@@ -325,39 +445,61 @@ int Pract_Rab_2(unsigned short number_of_task) {
                 break;
             }
             case 2: { // Создание списка с размерностью по количеству введённых элементов (Задание 1,б)
+                DeleteList(length, list);
+                unsigned int start_time =  clock(); // начальное время
+                list = Create_IndefiniteList(length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время выполнения: " << search_time << " милисекунд\n\n";
                 OutputList(list);
                 break;
             }
-            case 3: { // Скорость создания списка из задания 1,б (Задание 2)
-                break;
-            }
-            case 4: { // Вставка элемента (Задание 3.1)
+            case 3: { // Вставка элемента (Задание 3.1)
+                unsigned int start_time =  clock(); // начальное время
                 list = AddElement(list, length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время выполнения: " << search_time << " милисекунд\n\n";
                 OutputList(list);
                 break;
             }
-            case 5: { // Удаление элемента по значению (Задание 3.2)
+            case 4: { // Удаление элемента по значению (Задание 3.2)
+                unsigned int start_time =  clock(); // начальное время
                 DeleteElementByValue(list, length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время выполнения: " << search_time << " милисекунд\n\n";
                 OutputList(list);
                 break;
             }
-            case 6: { // Удаление элемента по позиции (Задание 3.3)
+            case 5: { // Удаление элемента по позиции (Задание 3.3)
+                unsigned int start_time =  clock(); // начальное время
                 DeleteElementByPosition(list, length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время выполнения: " << search_time << " милисекунд\n";
                 OutputList(list);
                 break;
             }
-            case 7: { // Обмен элементов (Задание 3.4)
+            case 6: { // Обмен элементов (Задание 3.4)
                 SwapElements(list, length);
                 OutputList(list);
                 break;
             }
-            case 8: { // Получение элемента по значению (Задание 3.4)
+            case 7: { // Получение элемента по значению (Задание 3.4)
+                unsigned int start_time =  clock(); // начальное время
+                GetElementByValue(list, length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время выполнения: " << search_time << " милисекунд\n";
                 break;
             }
-            case 9: {
-                break;
-            }
-            case 10: { // Скорость вставки, удаления и получения элемента (Задание 4)
+            case 8: { // Получение элемента по позиции
+                unsigned int start_time =  clock(); // начальное время
+                GetElementByPosition(list, length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время выполнения: " << search_time << " милисекунд\n";
                 break;
             }
             default: {

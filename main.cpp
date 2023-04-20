@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <chrono>
+#include <ctime>
 #include <random>
 #include "First_Pract_Functions.cpp"
 #include "Second_Pract_Functions.cpp"
