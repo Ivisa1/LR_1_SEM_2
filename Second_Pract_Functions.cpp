@@ -8,7 +8,7 @@ struct listItem{
 };
 
 // ФУНКЦИИ
-listItem *Create_DefiniteList(int &length) {
+listItem *CreateDefiniteList(int &length) {
     listItem *curr = 0, *next = 0;
     while(true) {
         cout << "Введите длину списка: ";
@@ -43,7 +43,7 @@ listItem *Create_DefiniteList(int &length) {
     return curr;
 }
 
-listItem *Create_IndefiniteList(int &length) {
+listItem *CreateIndefiniteList(int &length) {
     listItem *curr = 0, *next = 0;
     for(int i = 1; ; i++) {
         curr = new listItem;
@@ -65,7 +65,7 @@ listItem *Create_IndefiniteList(int &length) {
                 cin.clear();
                 cin.ignore();
                 delete curr;
-                next->prev = 0;
+                curr->prev = 0;
                 return next;
             }
         }
@@ -364,9 +364,12 @@ void OutputList(listItem *&list) {
 }
 
 // ИДЗ
-void DeleteMassive() {}
+void DeleteMassive(int &length) {
+    int *arr = new int[length];
+    delete [] arr;
+}
 
-void DeleteList(int &length, listItem *&list) {
+void DeleteList(int &length, listItem *list) {
     listItem *curr = list, *next = 0;
     for(int i = 1; i <= length; i++) {
         next = curr->next;
@@ -376,8 +379,61 @@ void DeleteList(int &length, listItem *&list) {
     length = 0;
 }
 
+int DeleteEvenElemntsFromList(int &length, listItem *&list) {
+    listItem *curr = list, *prev = 0;
+    for(int i = 1; i < length; i++) {
+        curr = curr->next;
+    }
+    for(int i = length; i >= 1 ; i--) {
+        if(curr->data % 2 == 0 && curr) {
+            prev = curr->prev;
+            if(curr->next) {
+                curr->next->prev = curr->prev;
+            }
+            if(curr->prev) {
+                curr->prev->next = curr->next;
+            }
+            delete curr;
+            length--;
+            curr = prev;
+            continue;
+        }
+        curr = curr->prev;
+    }
+}
 
-int Pract_Rab_2(unsigned short number_of_task) {
+void DeleteEvenElemntsFromArray(int &length) {
+    int lengthArr = length;
+    int *arr = new int[length];
+    for(int i = 0; i < length; i++) {
+        arr[i] = random()%100;
+    }
+
+    for(int i = 0; i < lengthArr; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << "\n";
+
+    for(int i = lengthArr - 1; i >= 0; i--) {
+        if(arr[i] % 2 == 0) {
+            int j = i;
+            for(; j < lengthArr - 1; j++) {
+                arr[j] = arr[j+1];
+            }
+            lengthArr--;
+        }
+    }
+
+    for(int i = 0; i < lengthArr; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << "\n\n";
+
+    delete [] arr;
+}
+
+
+int PractRab2(unsigned short number_of_task) {
     int length = 0;
     listItem *list;
 
@@ -395,14 +451,14 @@ int Pract_Rab_2(unsigned short number_of_task) {
             }
             case 1: {
                 DeleteList(length, list);
-                list = Create_DefiniteList(length);
+                list = CreateDefiniteList(length);
                 OutputList(list);
                 break;
             }
             case 2: {
                 DeleteList(length, list);
                 unsigned int start_time =  clock(); // начальное время
-                list = Create_IndefiniteList(length);
+                list = CreateIndefiniteList(length);
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
                 cout << "Время выполнения: " << search_time << " милисекунд\n\n";
@@ -428,6 +484,8 @@ int Pract_Rab_2(unsigned short number_of_task) {
                 "6. Обмен элементов\n"
                 "7. Получение элемента по значению\n"
                 "8. Получение элемента по индексу\n"
+                "9. ИДЗ 1 (Удаление списка и массива)\n"
+                "10. ИДЗ 2 (Удаление четных элементов списка и массива)\n"
                 "Для возвращения в предыдущее меню введите 0\n\n"
                 "Номер: ";
         cin >> number_of_task;
@@ -440,17 +498,17 @@ int Pract_Rab_2(unsigned short number_of_task) {
             }
             case 1: { // Создание списка с заданной размерностью и рандомными значениями (Задание 1,а)
                 DeleteList(length, list);
-                list = Create_DefiniteList(length);
+                list = CreateDefiniteList(length);
                 OutputList(list);
                 break;
             }
             case 2: { // Создание списка с размерностью по количеству введённых элементов (Задание 1,б)
                 DeleteList(length, list);
                 unsigned int start_time =  clock(); // начальное время
-                list = Create_IndefiniteList(length);
+                list = CreateIndefiniteList(length);
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
-                cout << "Время выполнения: " << search_time << " милисекунд\n\n";
+                cout << "Время выполнения: " << search_time << " миллисекунд\n\n";
                 OutputList(list);
                 break;
             }
@@ -459,7 +517,7 @@ int Pract_Rab_2(unsigned short number_of_task) {
                 list = AddElement(list, length);
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
-                cout << "Время выполнения: " << search_time << " милисекунд\n\n";
+                cout << "Время выполнения: " << search_time << " миллисекунд\n\n";
                 OutputList(list);
                 break;
             }
@@ -468,7 +526,7 @@ int Pract_Rab_2(unsigned short number_of_task) {
                 DeleteElementByValue(list, length);
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
-                cout << "Время выполнения: " << search_time << " милисекунд\n\n";
+                cout << "Время выполнения: " << search_time << " миллисекунд\n\n";
                 OutputList(list);
                 break;
             }
@@ -477,7 +535,7 @@ int Pract_Rab_2(unsigned short number_of_task) {
                 DeleteElementByPosition(list, length);
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
-                cout << "Время выполнения: " << search_time << " милисекунд\n";
+                cout << "Время выполнения: " << search_time << " миллисекунд\n";
                 OutputList(list);
                 break;
             }
@@ -491,7 +549,7 @@ int Pract_Rab_2(unsigned short number_of_task) {
                 GetElementByValue(list, length);
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
-                cout << "Время выполнения: " << search_time << " милисекунд\n";
+                cout << "Время выполнения: " << search_time << " миллисекунд\n";
                 break;
             }
             case 8: { // Получение элемента по позиции
@@ -499,8 +557,38 @@ int Pract_Rab_2(unsigned short number_of_task) {
                 GetElementByPosition(list, length);
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
-                cout << "Время выполнения: " << search_time << " милисекунд\n";
+                cout << "Время выполнения: " << search_time << " миллисекунд\n";
                 break;
+            }
+            case 9: {
+                unsigned int start_time =  clock();
+                DeleteMassive(length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время удаления динамического массива: " << search_time << " миллисекунд\n\n";
+
+                start_time =  clock();
+                DeleteList(length, list);
+                end_time = clock(); // конечное время
+                search_time = end_time - start_time; // искомое время
+                cout << "Время удаления двусвязного списка: " << search_time << " миллисекунд\n\n";
+
+                break;
+            }
+            case 10: {
+                unsigned int start_time =  clock();
+                DeleteEvenElemntsFromArray(length);
+                unsigned int end_time = clock(); // конечное время
+                unsigned int search_time = end_time - start_time; // искомое время
+                cout << "Время удаления четных элементов динамического массива: " << search_time << " миллисекунд\n\n";
+
+                OutputList(list);
+                start_time =  clock();
+                DeleteEvenElemntsFromList(length, list);
+                end_time = clock(); // конечное время
+                search_time = end_time - start_time; // искомое время
+                OutputList(list);
+                cout << "Время удаления четных эементов двусвязного списка: " << search_time << " миллисекунд\n\n";
             }
             default: {
                 cout << "\nЗадания с таким номером не существует\n";

@@ -32,7 +32,7 @@ int main() {
             }
             case 2: { // 2 практическая
                 cout << "\nВключение второй практической...\n";
-                Pract_Rab_2(number_of_pract_or_task);
+                PractRab2(number_of_pract_or_task);
                 break;
             }
             case 3: { // 3 практическая
