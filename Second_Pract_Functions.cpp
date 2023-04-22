@@ -237,6 +237,9 @@ int DeleteElementByValue(listItem *&list, int &length) {
             if(curr->prev) {
                 curr->prev->next = curr->next;
             }
+            else {
+                list = list->next;
+            }
             delete curr;
             length--;
             return 0;
@@ -279,6 +282,9 @@ int DeleteElementByPosition(listItem *&list, int &length) {
             }
             if(curr->prev) {
                 curr->prev->next = curr->next;
+            }
+            else {
+                list = list->next;
             }
             delete curr;
             length--;
@@ -351,14 +357,13 @@ int GetElementByPosition(listItem *&list, int &length) {
     }
 }
 
-void OutputList(listItem *&list) {
+void OutputList(listItem *&list, int length) {
     struct listItem *curr = list;
-    while (true) {
+    for(int i = 1; i <=length; i++) {
         cout << curr->data << ' ';
         if(curr->next) {
             curr = curr->next;
         }
-        else {break;}
     }
     cout << endl;
 }
@@ -452,7 +457,7 @@ int PractRab2(unsigned short number_of_task) {
             case 1: {
                 DeleteList(length, list);
                 list = CreateDefiniteList(length);
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             case 2: {
@@ -462,7 +467,7 @@ int PractRab2(unsigned short number_of_task) {
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
                 cout << "Время выполнения: " << search_time << " милисекунд\n\n";
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             default: {
@@ -499,7 +504,7 @@ int PractRab2(unsigned short number_of_task) {
             case 1: { // Создание списка с заданной размерностью и рандомными значениями (Задание 1,а)
                 DeleteList(length, list);
                 list = CreateDefiniteList(length);
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             case 2: { // Создание списка с размерностью по количеству введённых элементов (Задание 1,б)
@@ -509,7 +514,7 @@ int PractRab2(unsigned short number_of_task) {
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
                 cout << "Время выполнения: " << search_time << " миллисекунд\n\n";
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             case 3: { // Вставка элемента (Задание 3.1)
@@ -518,7 +523,7 @@ int PractRab2(unsigned short number_of_task) {
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
                 cout << "Время выполнения: " << search_time << " миллисекунд\n\n";
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             case 4: { // Удаление элемента по значению (Задание 3.2)
@@ -527,7 +532,7 @@ int PractRab2(unsigned short number_of_task) {
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
                 cout << "Время выполнения: " << search_time << " миллисекунд\n\n";
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             case 5: { // Удаление элемента по позиции (Задание 3.3)
@@ -536,12 +541,12 @@ int PractRab2(unsigned short number_of_task) {
                 unsigned int end_time = clock(); // конечное время
                 unsigned int search_time = end_time - start_time; // искомое время
                 cout << "Время выполнения: " << search_time << " миллисекунд\n";
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             case 6: { // Обмен элементов (Задание 3.4)
                 SwapElements(list, length);
-                OutputList(list);
+                OutputList(list, length);
                 break;
             }
             case 7: { // Получение элемента по значению (Задание 3.4)
@@ -582,12 +587,12 @@ int PractRab2(unsigned short number_of_task) {
                 unsigned int search_time = end_time - start_time; // искомое время
                 cout << "Время удаления четных элементов динамического массива: " << search_time << " миллисекунд\n\n";
 
-                OutputList(list);
+                OutputList(list, length);
                 start_time =  clock();
                 DeleteEvenElemntsFromList(length, list);
                 end_time = clock(); // конечное время
                 search_time = end_time - start_time; // искомое время
-                OutputList(list);
+                OutputList(list, length);
                 cout << "Время удаления четных эементов двусвязного списка: " << search_time << " миллисекунд\n\n";
             }
             default: {
