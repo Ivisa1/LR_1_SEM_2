@@ -6,6 +6,7 @@
 #include <random>
 #include "First_Pract_Functions.cpp"
 #include "Second_Pract_Functions.cpp"
+#include "Third_Pract_Functions.cpp"
 
 using namespace std;
 
@@ -36,7 +37,8 @@ int main() {
                 break;
             }
             case 3: { // 3 практическая
-                cout << "\nТретья практическая на данный момент в разработке\n";
+                cout << "\nВключение третьей практической...\n";
+                PractRab3(number_of_pract_or_task);
                 break;
             }
             case 4: { // курсовая

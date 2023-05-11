@@ -128,7 +128,7 @@ listItem *AddElement(listItem *&list, int &length) {
         item->next = list;
         list = item;
         length++;
-        return item;
+        return list;
     }
     listItem *curr = list;
     if(pos == length) {
