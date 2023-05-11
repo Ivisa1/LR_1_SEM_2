@@ -1,0 +1,6 @@
+Reversed initial string: 1-4+2
+Token: 1-4+2
+Out: 
+Ops: 
+
+Enter value for 1-4+2: 5
