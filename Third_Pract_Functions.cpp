@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <math.h>
+#include <cmath>
 
 using namespace std;
 
@@ -35,8 +35,8 @@ void stackPush(StackNode*& head, string data) {
 }
 
 StackNode* stackLast(StackNode* head) {
-    if (head == NULL)
-        return NULL;
+    if (head == 0)
+        return 0;
     while (head->next)
         head = head->next;
     return head;
@@ -46,14 +46,14 @@ void stackPushBack(StackNode* head, string data) {
     StackNode* last = stackLast(head);
     StackNode* next = new StackNode;
     next->value = data;
-    next->next = NULL;
+    next->next = 0;
     last->next = next;
 }
 
 string stackPop(StackNode*& head) {
-    StackNode* prev = NULL;
-    if (head == NULL)
-        return NULL;
+    StackNode* prev = 0;
+    if (head == 0)
+        return 0;
     prev = head;
     string val = head->value;
     head = head->next;
@@ -62,8 +62,8 @@ string stackPop(StackNode*& head) {
 }
 
 StackNode* stackGetLastButOne(StackNode* head) {
-    if (head == NULL || head->next == NULL)
-        return NULL;
+    if (head == 0 || head->next == 0)
+        return 0;
     while (head->next->next)
         head = head->next;
     return head;
@@ -71,20 +71,20 @@ StackNode* stackGetLastButOne(StackNode* head) {
 
 string stackPopBack(StackNode* head) {
     string value;
-    StackNode* lastbn = NULL;
+    StackNode* lastbn = 0;
     if (!head)
-        return NULL;
+        return 0;
 
     lastbn = stackGetLastButOne(head);
     value = lastbn->next->value;
 
-    if (lastbn == NULL) {
+    if (lastbn == 0) {
         delete head;
-        head = NULL;
+        head = 0;
     }
     else {
         delete lastbn->next;
-        lastbn->next = NULL;
+        lastbn->next = 0;
     }
     return value;
 }
@@ -101,7 +101,7 @@ int stackSize(StackNode* head) {
 StackNode* stackCreate(const string& data) {
     StackNode* node = new StackNode;
     node->value = data;
-    node->next = NULL;
+    node->next = 0;
     return node;
 }
 
@@ -117,7 +117,7 @@ string stackTake(StackNode*& head) {
 }
 
 void stackClear(StackNode* head) {
-    StackNode* prev = NULL;
+    StackNode* prev = 0;
     while (head->next) {
         prev = head;
         head = head->next;
@@ -199,8 +199,8 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
     variables.clear();
     string current_str;
     vector<string> str_tokens = tokenize(inpt_str);
-    StackNode* outStack = NULL;
-    StackNode* opStack = NULL;
+    StackNode* outStack = 0;
+    StackNode* opStack = 0;
     for (const auto& token : str_tokens) {
         if (!silent) {
             print("Token: " + token + "\nOut: ", cout, ofs);
@@ -289,7 +289,7 @@ void polishNotation(string& inpt_str, ofstream& ofs) {
 
 int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = false) {
     istringstream reader(rpn);
-    StackNode* outStack = NULL;
+    StackNode* outStack = 0;
     string token;
     while (!reader.eof()) {
         reader >> token;
@@ -359,29 +359,28 @@ int PractRab3(unsigned short number_of_task)
 {
     ofstream ofs ("output.txt");
     while (true) {
-        cout <<
-             "Choose a category from below:\n"
-             "0. Exit\n"
-             "1. Convert expression into polish notation\n"
-             "2. Convert expression into reverse polish notation\n"
-             "3. Validate mathematical expression\n"
-             "4. Validate polish notation expression\n"
-             "5. Validate reverse polish notation expression\n"
-             "6. Compute expression given in polish notation\n"
-             "7. Compute expression given in reverse polish notation\n\n";
-        int choice = readValue<int>("Type a number to continue: ");
-        cout << endl;
-        switch (choice) {
+        cout << "\nВыберите номер задания, к которому хотите получить доступ:\n"
+                "1. Конвертировать выражение в польскую запись\n"
+                "2. Конвертировать выражение в обратную польскую запись\n"
+                "3. Проверка правильности введённого выражения в обычной записи\n"
+                "4. Проверка правильности введённого выражения в польской записи\n"
+                "5. Проверка правильности введённого выражения в обратной польской записи\n"
+                "6. Посчитать значение выражения в польской записи\n"
+                "7. Посчитать значение выражения в обратной польской записи\n"
+                "Для возвращения в предыдущее меню введите 0\n\n"
+                "Номер: ";
+        cin >> number_of_task;
+        switch (number_of_task) {
             case 0:
                 return 0;
             case 1: {
                 string inp;
-                cout << "Enter mathematical expression: ";
+                cout << "Введите выражение в обычной записи: ";
                 getline(cin, inp);
                 try {
                     polishNotation(inp, ofs);
                 } catch (const char* data) {
-                    cout << "Error! " << data << endl;
+                    cout << "Ошибка " << data << endl;
                 }
             }
                 break;
