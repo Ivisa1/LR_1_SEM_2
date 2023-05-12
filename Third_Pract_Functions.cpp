@@ -222,11 +222,11 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
                     stackAdd(outStack, current_str);
                     StackNode* last = stackLast(opStack);
                     if (!last)
-                        throw "Unpaired bracket encountered";
+                        throw "Обнаружена непарная скобка";
                     current_str = last->value;
                 }
                 if (!opStack)
-                    throw "Unpaired bracket encountered";
+                    throw "Обнаружена непарная скобка";
                 current_str.clear();
                 stackTake(opStack);
             } else if (shouldMoveOperation(token, opStack)) {
@@ -241,7 +241,7 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
             } else {
                 auto found = variables.find(token);
                 if (found == variables.end()) {
-                    print("Enter value for " + token + ": ", cout, ofs);
+                    print("Введите значение для " + token + ": ", cout, ofs);
                     int var = readValue<int>();
                     ofs << var << endl;
                     variables[token] = var;
@@ -253,11 +253,11 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
         }
     }
     if (!silent)
-        print("Moving operations to main stack.\n", cout, ofs);
+        print("Перемещение операций в основной стек.\n", cout, ofs);
     while (opStack)
         stackPushBack(outStack, stackTake(opStack));
     if (!silent) {
-        print("Result: ", cout, ofs);
+        print("Результат: ", cout, ofs);
         stackPrint(outStack, cout); stackPrint(outStack, ofs);
         print("\n", cout, ofs);
     }
@@ -281,10 +281,10 @@ void polishNotation(string& inpt_str, ofstream& ofs) {
             inp.push_back(inpt_str[i]);
     }
     reverse(inpt_str.begin(), inpt_str.end());
-    print("Reversed initial string: " + inp + "\n", cout, ofs);
+    print("Инверсия инициализированной строки: " + inp + "\n", cout, ofs);
     string outp = reversePolishNotation(inp, ofs);
     reverse(outp.begin(), outp.end());
-    print("Reversing back.\nFinal result: " + outp + "\n", cout, ofs);
+    print("Иннверсия строки завершена.\nФинальный результат: " + outp + "\n", cout, ofs);
 }
 
 int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = false) {
@@ -297,7 +297,7 @@ int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = 
             stackAdd(outStack, token);
         } else {
             if (stackSize(outStack) < 2)
-                throw "Invalid operation order";
+                throw "Неверный порядок выполнения операций";
             int left, right;
             if (inverted) {
                 left = stoi(stackTake(outStack));
@@ -335,13 +335,13 @@ int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = 
                     stackAdd(outStack, to_string(pow(left, right)));
                     break;
                 default:
-                    string errt = "Unknown operator " + token;
+                    string errt = "Неизвестный оператор " + token;
                     throw errt.c_str();
             }
         }
     }
     if (stackSize(outStack) != 1)
-        throw "Invalid stack size";
+        throw "Неверный размер стека";
     return stoi(stackPop(outStack));
 }
 
@@ -374,11 +374,13 @@ int PractRab3(unsigned short number_of_task)
             case 0:
                 return 0;
             case 1: {
-                string inp;
+                string yourInput;
                 cout << "Введите выражение в обычной записи: ";
-                getline(cin, inp);
+                cin.clear();
+                cin.ignore();
+                getline(cin, yourInput);
                 try {
-                    polishNotation(inp, ofs);
+                    polishNotation(yourInput, ofs);
                 } catch (const char* data) {
                     cout << "Ошибка " << data << endl;
                 }
@@ -387,6 +389,8 @@ int PractRab3(unsigned short number_of_task)
             case 2: {
                 string yourInput;
                 cout << "Введите выражение в обычной записи: ";
+                cin.clear();
+                cin.ignore();
                 getline(cin, yourInput);
                 try {
                     reversePolishNotation(yourInput, ofs);
@@ -398,6 +402,8 @@ int PractRab3(unsigned short number_of_task)
             case 3: {
                 string yourInput;
                 cout << "Введите выражение в обычной записи: ";
+                cin.clear();
+                cin.ignore();
                 getline(cin, yourInput);
                 try {
                     string outp = reversePolishNotation(yourInput, ofs, true);
@@ -411,6 +417,8 @@ int PractRab3(unsigned short number_of_task)
             case 4: {
                 string yourInput;
                 cout << "Введите выражение в польской записи: ";
+                cin.clear();
+                cin.ignore();
                 getline(cin, yourInput);
                 try {
                     computePn(yourInput, ofs, true);
@@ -423,6 +431,8 @@ int PractRab3(unsigned short number_of_task)
             case 5: {
                 string yourInput;
                 cout << "Введите выражение в обратной польской записи: ";
+                cin.clear();
+                cin.ignore();
                 getline(cin, yourInput);
                 try {
                     computeRpn(yourInput, ofs, false, true);
@@ -435,6 +445,8 @@ int PractRab3(unsigned short number_of_task)
             case 6: {
                 string yourInput;
                 cout << "Введите выражение в польской записи: ";
+                cin.clear();
+                cin.ignore();
                 getline(cin, yourInput);
                 try {
                     cout << "Результат: " << computePn(yourInput, ofs) << endl;
@@ -446,6 +458,8 @@ int PractRab3(unsigned short number_of_task)
             case 7: {
                 string yourInput;
                 cout << "Введите выражение в обратной польской записи: ";
+                cin.clear();
+                cin.ignore();
                 getline(cin, yourInput);
                 try {
                     cout << "Результат: " << computeRpn(yourInput, ofs) << endl;
