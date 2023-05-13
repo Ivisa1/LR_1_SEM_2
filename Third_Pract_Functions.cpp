@@ -363,12 +363,12 @@ int computePn(string& rpn, ofstream& ofs, bool silent = false) {
 
 int checkStandartNotation(string& rpn) {
     istringstream reader(rpn);
-    bool isbracket = false;
+    int isbracket = 0;
     int curritem = -1, count = 0; // Если число - 2, если скобка - 0, если операнд - 1
     string token;
     while(!reader.eof()) {
         reader >> token;
-        if(token == "+" || token == "-" || token == "*" || token == "/") {
+        if(token == "+" || token == "-" || token == "*" || token == "/" || token == "^") {
             if(curritem == 1) {
                 throw "Неверный порядок операндов и операций";
             } else {
@@ -380,7 +380,7 @@ int checkStandartNotation(string& rpn) {
             if(curritem == 0) {
                 throw "Неверный порядок операндов и операций";
             } else {
-                isbracket = true;
+                isbracket++;
                 curritem = 0;
                 count++;
             }
@@ -389,7 +389,7 @@ int checkStandartNotation(string& rpn) {
             if(curritem == 0) {
                 throw "Неверный порядок операндов и операций";
             } else {
-                isbracket = false;
+                isbracket--;
                 curritem = 0;
                 count++;
             }
@@ -410,7 +410,7 @@ int checkStandartNotation(string& rpn) {
     if(curritem == 1) {
         throw "Неправильное количество операндов";
     }
-    if(isbracket == true) {
+    if(isbracket != 0) {
         throw "Скобка не закрыта";
     }
 }
