@@ -438,7 +438,7 @@ void DeleteEvenElemntsFromArray(int &length) {
 }
 
 
-int PractRab2(unsigned short number_of_task) {
+int PractRab2(unsigned short &number_of_task) {
     int length = 0;
     listItem *list;
 

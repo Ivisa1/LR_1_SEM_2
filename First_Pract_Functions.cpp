@@ -431,7 +431,7 @@ void MaxMidMark(struct Student students[], unsigned short temp) {
                            temp);
 }
 
-int Pract_Rab_1(unsigned short number_of_task) {
+int Pract_Rab_1(unsigned short &number_of_task) {
     struct Student students[100];
     unsigned short temp = 0;
     while(true) {

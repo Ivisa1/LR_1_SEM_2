@@ -2,11 +2,10 @@
 
 #include <iostream>
 #include <fstream>
-#include <ctime>
-#include <random>
 #include "First_Pract_Functions.cpp"
 #include "Second_Pract_Functions.cpp"
 #include "Third_Pract_Functions.cpp"
+#include "Course_Project_Functions.cpp"
 
 using namespace std;
 
@@ -42,7 +41,8 @@ int main() {
                 break;
             }
             case 4: { // курсовая
-                cout << "\nКурсовая на данный момент в разработке\n";
+                cout << "\nВключение курсовой...\n";
+                CourseProject(number_of_pract_or_task);
                 break;
             }
             default: { // несуществующая практическая

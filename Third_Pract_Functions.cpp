@@ -98,13 +98,6 @@ int stackSize(StackNode* head) {
     return count;
 }
 
-StackNode* stackCreate(const string& data) {
-    StackNode* node = new StackNode;
-    node->value = data;
-    node->next = 0;
-    return node;
-}
-
 void stackAdd(StackNode*& head, const string& data) {
     if (!head)
         stackPush(head, data);
@@ -116,16 +109,6 @@ string stackTake(StackNode*& head) {
     return stackSize(head) > 1 ? stackPopBack(head) : stackPop(head);
 }
 
-void stackClear(StackNode* head) {
-    StackNode* prev = 0;
-    while (head->next) {
-        prev = head;
-        head = head->next;
-        delete prev;
-    }
-    delete head;
-}
-
 void stackPrint(StackNode* head, ostream& sout) {
     while (head) {
         sout << head->value << " ";
@@ -133,13 +116,11 @@ void stackPrint(StackNode* head, ostream& sout) {
     }
 }
 
-/*
-*   Функция для ввода данных в терминал
-*   При вызове функции нужно указать получаемые данные в скобках,
-*   т.е. readValue<int>() - получить число.
-*   prompt - текст перед вводом
-*   value - значение для заполнения
-*/
+// Функция для ввода данных в терминал
+// При вызове функции нужно указать получаемые данные в скобках,
+// т.е. readValue<int>() - получить число.
+// prompt - текст перед вводом
+// value - значение для заполнения
 template <typename T>
 T readValue(const char* prompt = "") {
     T value = 0;
@@ -149,17 +130,16 @@ T readValue(const char* prompt = "") {
         if (cin.fail()) {
             cout << "Некорректный ввод. Введите значение: ";
             cin.clear();
-            // numeric_limits<streamsize> это предел количества знаков в streamsize (вернёт число)
-            // нужно чтобы очистить максимальное количество оставшихся символов в буфере до новой строки
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore('\n');
         }
         else {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore('\n');
             return value;
         }
     }
 }
 
+// Функции для реализации алгоритмов польской нотации и обратной польской нотации
 bool isOperation(const string& str) {
     auto res = weights.find(str);
     return res != weights.end();
@@ -185,15 +165,11 @@ bool shouldMoveOperation(string token, StackNode* opstack) {
     return weights.find(last->value)->second >= weights.find(token)->second;
 }
 
-void print(string str, ostream& os1, ofstream& os2) {
+void print(string str, ostream& os1) {
     os1 << str;
-    if(os2.is_open()) {
-        os2 << str;
-    }
-    os2.close();
 }
 
-string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = false) {
+string reversePolishNotation(string& inpt_str, bool silent = false) {
     variables.clear();
     string current_str;
     vector<string> str_tokens = tokenize(inpt_str);
@@ -201,11 +177,11 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
     StackNode* opStack = 0;
     for (const auto& token : str_tokens) {
         if (!silent) {
-            print("Токен: " + token + "\nВывод: ", cout, ofs);
-            stackPrint(outStack, cout); stackPrint(outStack, ofs);
-            print("\nОпс: ", cout, ofs);
-            stackPrint(opStack, cout); stackPrint(opStack, ofs);
-            print("\n\n", cout, ofs);
+            print("Токен: " + token + "\nВывод: ", cout);
+            stackPrint(outStack, cout);
+            print("\nСтек: ", cout);
+            stackPrint(opStack, cout);
+            print("\n\n", cout);
         }
         if (isNumber(token))
             stackAdd(outStack, token);
@@ -239,9 +215,8 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
             } else {
                 auto found = variables.find(token);
                 if (found == variables.end()) {
-                    print("Введите значение для " + token + ": ", cout, ofs);
+                    print("Введите значение для " + token + ": ", cout);
                     int var = readValue<int>();
-                    ofs << var << endl;
                     variables[token] = var;
                     stackAdd(outStack, to_string(var));
                 } else {
@@ -251,13 +226,13 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
         }
     }
     if (!silent)
-        print("Перемещение операций в основной стек.\n", cout, ofs);
+        print("Перемещение операций в основной стек.\n", cout);
     while (opStack)
         stackPushBack(outStack, stackTake(opStack));
     if (!silent) {
-        print("Результат: ", cout, ofs);
-        stackPrint(outStack, cout); stackPrint(outStack, ofs);
-        print("\n", cout, ofs);
+        print("Результат: ", cout);
+        stackPrint(outStack, cout);
+        print("\n", cout);
     }
     string outp;
     while (outStack) {
@@ -268,7 +243,7 @@ string reversePolishNotation(string& inpt_str, ofstream& ofs, bool silent = fals
     return outp;
 }
 
-void polishNotation(string& inpt_str, ofstream& ofs) {
+void polishNotation(string& inpt_str) {
     string inp;
     for(int i = inpt_str.length() - 1; i >= 0; i--) {
         if (inpt_str[i] == '(')
@@ -279,13 +254,13 @@ void polishNotation(string& inpt_str, ofstream& ofs) {
             inp.push_back(inpt_str[i]);
     }
     reverse(inpt_str.begin(), inpt_str.end());
-    print("Инверсия инициализированной строки: " + inp + "\n", cout, ofs);
-    string outp = reversePolishNotation(inp, ofs);
+    print("Инверсия инициализированной строки: " + inp + "\n", cout);
+    string outp = reversePolishNotation(inp);
     reverse(outp.begin(), outp.end());
-    print("Инверсия строки завершена.\nФинальный результат: " + outp + "\n", cout, ofs);
+    print("Инверсия строки завершена.\nФинальный результат: " + outp + "\n", cout);
 }
 
-int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = false) {
+int computeRpn(string& rpn, bool inverted = false, bool silent = false) {
     istringstream reader(rpn);
     StackNode* outStack = 0;
     string token;
@@ -309,13 +284,13 @@ int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = 
             switch (token[0]) {
                 case '+':
                     if (!silent) {
-                        print(to_string(left) + " + " + to_string(right) + " = " + to_string(left + right) + '\n', cout, ofs);
+                        print(to_string(left) + " + " + to_string(right) + " = " + to_string(left + right) + '\n', cout);
                         stackAdd(outStack, to_string(left + right));
                     }
                     break;
                 case '-':
                     if (!silent) {
-                        print(to_string(left) + " - " + to_string(right) + " = " + to_string(left - right) + '\n', cout, ofs);
+                        print(to_string(left) + " - " + to_string(right) + " = " + to_string(left - right) + '\n', cout);
                         stackAdd(outStack, to_string(left - right));
                     }
                     break;
@@ -324,19 +299,19 @@ int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = 
                         if (right == 0) {
                             throw "Деление на 0";
                         }
-                        print(to_string(left) + " / " + to_string(right) + " = " + to_string(left / right) + '\n', cout, ofs);
+                        print(to_string(left) + " / " + to_string(right) + " = " + to_string(left / right) + '\n', cout);
                         stackAdd(outStack, to_string(left / right));
                     }
                     break;
                 case '*':
                     if (!silent) {
-                        print(to_string(left) + " * " + to_string(right) + " = " + to_string(left * right) + '\n', cout, ofs);
+                        print(to_string(left) + " * " + to_string(right) + " = " + to_string(left * right) + '\n', cout);
                         stackAdd(outStack, to_string(left * right));
                     }
                     break;
                 case '^':
                     if (!silent) {
-                        print(to_string(left) + " ^ " + to_string(right) + " = " + to_string((int)pow(left, right)) + '\n', cout, ofs);
+                        print(to_string(left) + " ^ " + to_string(right) + " = " + to_string((int)pow(left, right)) + '\n', cout);
                         stackAdd(outStack, to_string(pow(left, right)));
                     }
                     break;
@@ -351,14 +326,14 @@ int computeRpn(string& rpn, ofstream& ofs, bool inverted = false, bool silent = 
     return stoi(stackPop(outStack));
 }
 
-int computePn(string& rpn, ofstream& ofs, bool silent = false) {
+int computePn(string& rpn, bool silent = false) {
     vector<string> tokens = tokenize(rpn);
     reverse(tokens.begin(), tokens.end());
     string rev;
     for(const auto& token : tokens)
         rev += token + ' ';
     rev.pop_back();
-    return computeRpn(rev, ofs, true, silent);
+    return computeRpn(rev, true, silent);
 }
 
 int checkStandartNotation(string& rpn) {
@@ -415,9 +390,8 @@ int checkStandartNotation(string& rpn) {
     }
 }
 
-int PractRab3(unsigned short number_of_task)
+int PractRab3(unsigned short &number_of_task)
 {
-    ofstream ofs ("/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/output.txt");
     while (true) {
         cout << "\nВыберите номер задания, к которому хотите получить доступ:\n"
                 "1. Конвертировать выражение в польскую запись\n"
@@ -432,6 +406,7 @@ int PractRab3(unsigned short number_of_task)
         cin >> number_of_task;
         switch (number_of_task) {
             case 0:
+                cout << "\nВозвращение в предыдущее меню...\n";
                 return 0;
             case 1: {
                 string yourInput;
@@ -440,7 +415,7 @@ int PractRab3(unsigned short number_of_task)
                 cin.ignore();
                 getline(cin, yourInput);
                 try {
-                    polishNotation(yourInput, ofs);
+                    polishNotation(yourInput);
                 } catch (const char* data) {
                     cout << "Ошибка: " << data << endl;
                 }
@@ -453,7 +428,7 @@ int PractRab3(unsigned short number_of_task)
                 cin.ignore();
                 getline(cin, yourInput);
                 try {
-                    reversePolishNotation(yourInput, ofs);
+                    reversePolishNotation(yourInput);
                 } catch (const char* data) {
                     cout << "Ошибка: " << data << endl;
                 }
@@ -480,7 +455,7 @@ int PractRab3(unsigned short number_of_task)
                 cin.ignore();
                 getline(cin, yourInput);
                 try {
-                    computePn(yourInput, ofs, true);
+                    computePn(yourInput, true);
                     cout << "Выражение введено верно\n";
                 } catch (const char* data) {
                     cout << "Выражение введено неверно: " << data << endl;
@@ -494,7 +469,7 @@ int PractRab3(unsigned short number_of_task)
                 cin.ignore();
                 getline(cin, yourInput);
                 try {
-                    computeRpn(yourInput, ofs, false, true);
+                    computeRpn(yourInput, false, true);
                     cout << "Выражение введено верно\n";
                 } catch (const char* data) {
                     cout << "Выражение введено неверно: " << data << endl;
@@ -508,7 +483,7 @@ int PractRab3(unsigned short number_of_task)
                 cin.ignore();
                 getline(cin, yourInput);
                 try {
-                    cout << "Результат: " << computePn(yourInput, ofs) << endl;
+                    cout << "Результат: " << computePn(yourInput) << endl;
                 } catch (const char* data) {
                     cout << "Ошибка разбора строки: " << data << endl;
                 }
@@ -521,7 +496,7 @@ int PractRab3(unsigned short number_of_task)
                 cin.ignore();
                 getline(cin, yourInput);
                 try {
-                    cout << "Результат: " << computeRpn(yourInput, ofs) << endl;
+                    cout << "Результат: " << computeRpn(yourInput) << endl;
                 } catch (...) {
                     cout << "Ошибка разбора строки " << endl;
                 }
