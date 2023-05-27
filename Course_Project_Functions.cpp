@@ -5,6 +5,10 @@
 #include <random>
 
 #define output_tree "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/output_tree.txt"
+#define outout_key "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/output_key.txt"
+#define outout_ans "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/output_ans.txt"
+#define outout_task "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/output_task.txt"
+#define binary_tree "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/binary_tree.txt"
 
 using namespace std;
 
@@ -14,13 +18,6 @@ struct Tree
     Tree* left;    //указатель на левого потомка
     Tree* right;   //указатель на правого потомка
 };
-
-//Tree* CreateTree(int value) {
-//    Tree* root = (Tree*)malloc(sizeof(Tree));
-//    root->left = root->right = NULL;
-//    root->value = value;
-//    return root;
-//}
 
 int SearchElement(int key, Tree* tree) {
     if (tree != NULL)
@@ -137,6 +134,28 @@ Tree* CreateRandomTree(Tree* tree) {
 
 void CreateNoRandomTree(Tree* tree) {
     int key;
+    while(true) {
+        cout << "Введите число: ";
+        if(cin >> key) {
+            InsertElement(key, tree);
+        }
+        else {
+            cin.clear();
+            cin.ignore();
+            break;
+        }
+    }
+}
+
+void CreateFromFileTree (Tree* tree) {
+    int key;
+    ifstream File;
+    File.open(binary_tree);
+    while(!File.eof()) {
+        File >> key;
+        InsertElement(key, tree);
+    }
+    File.close();
 }
 
 void PrintTree(Tree *tree, int level, bool isConsole)
@@ -269,9 +288,15 @@ int CourseProject(unsigned short &number_of_task) {
                 break;
             }
             case 2: {
+                tree = DestroyTree(tree);
+                tree = new Tree;
+                CreateNoRandomTree(tree);
                 break;
             }
             case 3: {
+                tree = DestroyTree(tree);
+                tree = new Tree;
+                CreateFromFileTree(tree);
                 break;
             }
             case 4: {

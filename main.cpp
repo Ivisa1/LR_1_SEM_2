@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <fstream>
-#include "First_Pract_Functions.cpp"
-#include "Second_Pract_Functions.cpp"
-#include "Third_Pract_Functions.cpp"
+//#include "First_Pract_Functions.cpp"
+//#include "Second_Pract_Functions.cpp"
+//#include "Third_Pract_Functions.cpp"
 #include "Course_Project_Functions.cpp"
 
 using namespace std;
@@ -24,22 +24,22 @@ int main() {
         }
 
         switch (number_of_pract_or_task) { // выбор практической
-            case 1: { // 1 практическая
-                // cout << "\nПервая практическая на данный момент в разработке\n";
-                cout << "\nВключение первой практической...\n";
-                Pract_Rab_1(number_of_pract_or_task);
-                break;
-            }
-            case 2: { // 2 практическая
-                cout << "\nВключение второй практической...\n";
-                PractRab2(number_of_pract_or_task);
-                break;
-            }
-            case 3: { // 3 практическая
-                cout << "\nВключение третьей практической...\n";
-                PractRab3(number_of_pract_or_task);
-                break;
-            }
+//            case 1: { // 1 практическая
+//                // cout << "\nПервая практическая на данный момент в разработке\n";
+//                cout << "\nВключение первой практической...\n";
+//                Pract_Rab_1(number_of_pract_or_task);
+//                break;
+//            }
+//            case 2: { // 2 практическая
+//                cout << "\nВключение второй практической...\n";
+//                PractRab2(number_of_pract_or_task);
+//                break;
+//            }
+//            case 3: { // 3 практическая
+//                cout << "\nВключение третьей практической...\n";
+//                PractRab3(number_of_pract_or_task);
+//                break;
+//            }
             case 4: { // курсовая
                 cout << "\nВключение курсовой...\n";
                 CourseProject(number_of_pract_or_task);
