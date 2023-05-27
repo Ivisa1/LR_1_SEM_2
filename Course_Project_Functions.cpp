@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <ctime>
 #include <queue>
+#include <random>
 
 #define output_tree "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/output_tree.txt"
 
@@ -14,12 +15,12 @@ struct Tree
     Tree* right;   //указатель на правого потомка
 };
 
-Tree* CreateTree(int value) {
-    Tree* root = (Tree*)malloc(sizeof(Tree));
-    root->left = root->right = NULL;
-    root->value = value;
-    return root;
-}
+//Tree* CreateTree(int value) {
+//    Tree* root = (Tree*)malloc(sizeof(Tree));
+//    root->left = root->right = NULL;
+//    root->value = value;
+//    return root;
+//}
 
 int SearchElement(int key, Tree* tree) {
     if (tree != NULL)
@@ -81,31 +82,61 @@ Tree* DeleteElement(int key, Tree* tree) {
     return tree;
 }
 
-void InsertElement(int key, Tree* root) {        // (новое ключевое значение, указатель на текущий узел)
-    if (key < root->value)            // если новое ключевое значение меньше чем ключевое значение в узле
+void InsertElement(int key, Tree* tree) {        // (новое ключевое значение, указатель на текущий узел)
+    if (key < tree->value)            // если новое ключевое значение меньше чем ключевое значение в узле
     {
-        if (root->left!= NULL)           // и если левый указатель узла инициализирован
-            InsertElement(key, root->left);      // функция вызывает саму себя, для левого узла потомка
+        if (tree->left!= NULL)           // и если левый указатель узла инициализирован
+            InsertElement(key, tree->left);      // функция вызывает саму себя, для левого узла потомка
         else                              // иначе (если левый потомок не инициализирован)
         {
-            root->left = new Tree;        // функция создаст и поместит новый элемент на место левого потомка.
-            root->left->value = key;  // внесёт новое ключевое значение в элемент.
-            root->left->left = NULL;      // установит левый дочерний указатель
-            root->left->right = NULL;     // и правый дочерний указатель в NULL.
+            tree->left = new Tree;        // функция создаст и поместит новый элемент на место левого потомка.
+            tree->left->value = key;  // внесёт новое ключевое значение в элемент.
+            tree->left->left = NULL;      // установит левый дочерний указатель
+            tree->left->right = NULL;     // и правый дочерний указатель в NULL.
         }
     }
-    else if (key >= root->value) {     // иначе, если новое ключевое значение не меньше ключевого значения в узле
-
-        if (root->right != NULL)          // и если правый указатель инициализирован,
-            InsertElement(key, root->right);     // то функция вызывает саму себя, для правого потомка
+    else if (key > tree->value) {     // иначе, если новое ключевое значение не меньше ключевого значения в узле
+        if (tree->right != NULL)          // и если правый указатель инициализирован,
+            InsertElement(key, tree->right);     // то функция вызывает саму себя, для правого потомка
         else                              // иначе(если правый потомок не инициализирован)
         {
-            root->right = new Tree;       // функция создаст и поместит новый элемент на место правого потомка.
-            root->right->value = key; // внесёт новое ключевое значение в элемент.
-            root->right->left = NULL;     // установит левый дочерний указатель
-            root->right->right = NULL;    // и правый дочерний указатель в NULL.
+            tree->right = new Tree;       // функция создаст и поместит новый элемент на место правого потомка.
+            tree->right->value = key; // внесёт новое ключевое значение в элемент.
+            tree->right->left = NULL;     // установит левый дочерний указатель
+            tree->right->right = NULL;    // и правый дочерний указатель в NULL.
         }
     }
+}
+
+Tree* DestroyTree(Tree *tree)
+{
+    if(tree != NULL)	    	        // если узел дерева существует
+    {					// функция вызовет сама себя
+        DestroyTree(tree->left);	// сначала для левого потомка,
+        DestroyTree(tree->right);  	// после для правого потомка.
+        delete tree;			// если потомков нет, она удалит
+    }
+}
+
+Tree* CreateRandomTree(Tree* tree) {
+    int key;
+    int count;
+    cout << "Введите количество элементов массива: ";
+    cin >> count;
+    tree->value = 0;
+    if(count > 0) {
+        key = rand() % 100;
+        tree->value = key;
+        for (int i = 1; i < count; i++) {
+            key = rand() % 100;
+            InsertElement(key, tree);
+        }
+    }
+    return tree;
+}
+
+void CreateNoRandomTree(Tree* tree) {
+    int key;
 }
 
 void PrintTree(Tree *tree, int level, bool isConsole)
@@ -204,18 +235,9 @@ void BreadthFirstSearch(Tree *tree){
     }
 }
 
-void DestroyTree(Tree *tree)
-{
-    if(tree != NULL)	    	        // если узел дерева существует
-    {					// функция вызовет сама себя
-        DestroyTree(tree->left);	// сначала для левого потомка,
-        DestroyTree(tree->right);  	// после для правого потомка.
-        delete tree;			// если потомков нет, она удалит
-    }
-}
-
 int CourseProject(unsigned short &number_of_task) {
     Tree *tree = new Tree;
+    tree->value = 0;
     int key;
     while(true) {
         cout << "\nВыберите номер задания, к которому хотите получить доступ:\n"
@@ -241,6 +263,9 @@ int CourseProject(unsigned short &number_of_task) {
                 return 0;
             }
             case 1: {
+                tree = DestroyTree(tree);
+                tree = new Tree;
+                CreateRandomTree(tree);
                 break;
             }
             case 2: {
