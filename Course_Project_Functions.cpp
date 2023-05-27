@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <queue>
 
 #define output_tree "/Users/lemeshkoaleksey/!C++ Projects/2023/Pract_rabs_2_sem_2023/output_tree.txt"
 
@@ -41,22 +42,22 @@ int SearchElement(int key, Tree* tree) {
 }
 
 Tree* DeleteElement(int key, Tree* tree) {
-    if(tree == NULL)
+    if(tree == NULL) {
+        cout << "Искомое число не найдено. ";
         return tree;
-
-    if(key == tree->value){
-
+    }
+    else if(key == tree->value) {
+        cout << "Искомое число удалено. ";
         Tree* tmp;
         if(tree->right == NULL)
             tmp = tree->left;
         else {
-
             Tree* ptr = tree->right;
             if(ptr->left == NULL){
                 ptr->left = tree->left;
                 tmp = ptr;
-            } else {
-
+            }
+            else {
                 Tree* pmin = ptr->left;
                 while(pmin->left != NULL){
                     ptr  = pmin;
@@ -68,13 +69,15 @@ Tree* DeleteElement(int key, Tree* tree) {
                 tmp = pmin;
             }
         }
-
         delete tree;
         return tmp;
-    } else if(key < tree->value)
+    }
+    else if (key < tree->value) {
         tree->left = DeleteElement(key, tree->left);
-    else
+    }
+    else {
         tree->right = DeleteElement(key, tree->right);
+    }
     return tree;
 }
 
@@ -167,6 +170,40 @@ void PrintTree(Tree *tree, int level, bool isConsole)
 //    f2 << p->str;//выводим отступы и связи
 //}
 
+void PreOrderTravers(Tree* tree) {
+    if (tree) {
+        cout << tree->value << " ";
+        PreOrderTravers(tree->left);
+        PreOrderTravers(tree->right);
+    }
+}
+
+void PostOrderTravers(Tree* tree) {
+    if (tree) {
+        PostOrderTravers(tree->left);
+        PostOrderTravers(tree->right);
+        std::cout << tree->value << " ";
+    }
+}
+
+void BreadthFirstSearch(Tree *tree){
+    queue<Tree *> nodeQueue;
+    Tree* root = new Tree;
+    root = tree;
+    nodeQueue.push(root);
+    while (!nodeQueue.empty()) {
+        root = nodeQueue.front();
+        cout << root->value << " ";
+        nodeQueue.pop();
+        if (root->left) {
+            nodeQueue.push (root-> left); // Сначала поместите левое поддерево в команду
+        }
+        if (root->right) {
+            nodeQueue.push (root-> right); // Поместить правильное поддерево в команду
+        }
+    }
+}
+
 void DestroyTree(Tree *tree)
 {
     if(tree != NULL)	    	        // если узел дерева существует
@@ -255,12 +292,18 @@ int CourseProject(unsigned short &number_of_task) {
                 break;
             }
             case 9: {
+                PreOrderTravers(tree);
+                cout << "\n";
                 break;
             }
             case 10: {
+                PostOrderTravers(tree);
+                cout << "\n";
                 break;
             }
             case 11: {
+                BreadthFirstSearch(tree);
+                cout << "\n";
                 break;
             }
             case 12: {
